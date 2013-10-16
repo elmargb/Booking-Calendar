@@ -5,10 +5,10 @@ What you need to do is to set the ajax url in the BookingCalendar class with the
 When this is done, you have to insert some php code in the file that will be called through Ajax :
 
 <?php
-//Call the Calendar library
+/* Call the Calendar library */
 jimport('bookingcalendar.calendar');
 
-//Get uri variables
+/* Get uri variables */
 $app = JFactory::getApplication();
 $jinput = $app->input;
 
@@ -17,13 +17,13 @@ $month = $jinput->get('month', 0, 'INT');
 $year = $jinput->get('year', 0, 'INT');
 $status = $jinput->get('status', null, 'INT');
 
-//Create calendar
+/* Create calendar */
 $calendar = new BookingCalendar();
 
-//Get Booked Days
+/* Get Booked Days */
 $booked_days = $calendar->getBookedDays($item_id, $month, $year, $status);
 
-//Display calendar
+/* Display calendar */
 echo $calendar->populate($month, $year, $booked_days);
 ?>
 
