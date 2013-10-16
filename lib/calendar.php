@@ -50,7 +50,7 @@ class BookingCalendar {
 	
 		$layoutPath = JPATH_ROOT . $this->root_theme . DIRECTORY_SEPARATOR . $this->theme . DIRECTORY_SEPARATOR . 'layouts';
 		
-		$this->scripts();
+		$this->_scripts();
 		
 		$html_skeleton = $html_main = $html_controls = $html_statuses = '';
 		
@@ -273,7 +273,26 @@ class BookingCalendar {
 		return $the_cal;
 	}
 
-	public function scripts() {
+	public function getBookedDays($item_id, $month, $year, $status = null) {
+		
+		$booked_days = array();
+		
+		/* the booked days array must have this format :
+		 * $booked_days[Y-m-d][#]['status'] = 'booked'
+		 * [Y-m-d] -> The date of the day : 2013-10-15
+		 * [#] -> Key : 0 for the first retrieved item
+		 * ['booked'] -> value of the status. Can be what you want. It will be used in the title of the day and as css class.
+		 *  
+		*/ 
+		
+		// this sets the 1st day of the $month and $year as 'booked'.
+		$booked_date = date('Y-m-d', mktime(0, 0, 0, $month, 1, $year));
+		$booked_days[$booked_date][0]['status'] = 'booked';
+		
+		return $booked_days;
+	}
+	
+	protected function _scripts() {
 		JHtml::script(Juri::root() . $this->root_js . '/bookingcalendar.js');
 		JHtml::stylesheet(Juri::root() . $this->root_theme . '/' . $this->theme . '/css/style.css');
 
