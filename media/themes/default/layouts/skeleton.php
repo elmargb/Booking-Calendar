@@ -5,8 +5,8 @@
 	
 	<?php echo $displayData['html_main']; ?>
 	
-	<?php if ($displayData['html_statuses'] != ''): ?>
-	<?php echo $displayData['html_statuses']; ?>
+	<?php if ($displayData['html_legend'] != ''): ?>
+	<?php echo $displayData['html_legend']; ?>
 	<?php endif; ?>
 	
 	<div style="clear:both;"></div>
