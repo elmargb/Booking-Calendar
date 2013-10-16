@@ -27,16 +27,34 @@ To manage your own theme :
  	- skeleton.php -> it is the container for other templates
  	- main.php -> loads the calendars
  	- controls.php -> loads the navigation bar
- 	- statuses.php -> loads the legend
+ 	- legend.php -> loads the legend
  	
-How to load a calendar :
+Loading a calendar with default theme, 3 months displayed from current one and lengend displayed :
 
 <?php
 jimport('bookingcalendar.calendar');
 
-$calendar = new BookingCalendar();
+$calendar = new BookingCalendar( array(
+	'item_id' => $my_item_id
+	)
+);
 
-$calendar->theme = 'custom';
+$calendar->display();
+?>
+
+Loading a calendar with 'custom' theme, 12 months displayed from january of the current year and legend hidden :
+
+<?php
+jimport('bookingcalendar.calendar');
+
+$calendar = new BookingCalendar( array(
+	'item_id' => $my_item_id,
+	'theme' => 'custom',
+	'months_to_show' => 12,
+	'start_month' => '01',
+	'show_legend' => false
+	)
+);
 
 $calendar->display();
 ?>
