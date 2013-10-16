@@ -5,15 +5,15 @@ function load_calendar(el,month,year){
 	jQuery.ajax({
 		type: "GET",
 		async: false,
-		url: ajax_url,
-		data: {'item_id':item_id,'month':month,'year':year},
+		url: bookingcalendar_ajax_url,
+		data: {'item_id':bookingcalendar_item_id,'month':month,'year':year,'status':bookingcalendar_status},
 		beforeSend: function( xhr ) {
-			el.html('<img class="img_loading_month" src="'+img_loading_month+'">');	
+			el.html('<img class="img_loading_month" src="' + bookingcalendar_img_loading_month + '">');	
 		}
 	}).done(function(data) {
 		el.html( data );
 		
-		if(clickable_past == false){
+		if(bookingcalendar_clickable_past == false){
 			jQuery('#the_months .past').each(function() {
 				jQuery(this).css({opacity: 0.6});
 			});
@@ -53,14 +53,14 @@ function calendar_nav(){
 				new_year	= parseFloat(data[1]);
 				
 				if(type=='cal_prev'){
-					new_month=(cur_month-months_to_show);
+					new_month=(cur_month-bookingcalendar_months_to_show);
 					if(new_month<1){
 						//	reset month and add 1 year
 						new_month=(new_month+12);
 						new_year=(new_year-1);
 					}
 				}else if(type=='cal_next'){
-					new_month=(cur_month+months_to_show);
+					new_month=(cur_month+bookingcalendar_months_to_show);
 					if(new_month>12){
 						//	reset month and add 1 year
 						new_month=(new_month-12);

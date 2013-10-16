@@ -25,7 +25,8 @@ class BookingCalendar {
 	public $start_year;
 	public $start_month;
 	
-	public $item_id = 0;
+	public $item_id = null;
+	public $status = null;
 	
 	public $ajax_url = '';
 	
@@ -95,8 +96,11 @@ class BookingCalendar {
 		);
 	}
 	
-	function populate($month, $year, $booked_days) {
+	function populate($month, $year, $booked_days = null) {
 	
+		if (!(isset($booked_days)))
+			$booked_days = $this->_getBookedDays($month, $year);
+		
 		$month=sprintf("%02s",$month);
 		//	define vars
 		$today_timestamp	=   mktime(0,0,0,date('m'),date('d'),date('Y'));	# 	current timestamp - used to check if date is in past
@@ -273,7 +277,7 @@ class BookingCalendar {
 		return $the_cal;
 	}
 
-	public function getBookedDays($item_id, $month, $year, $status = null) {
+	protected function _getBookedDays($month, $year) {
 		
 		$booked_days = array();
 		
@@ -286,8 +290,10 @@ class BookingCalendar {
 		*/ 
 		
 		// this sets the 1st day of the $month and $year as 'booked'.
+		/*
 		$booked_date = date('Y-m-d', mktime(0, 0, 0, $month, 1, $year));
 		$booked_days[$booked_date][0]['status'] = 'booked';
+		*/
 		
 		return $booked_days;
 	}
@@ -298,14 +304,26 @@ class BookingCalendar {
 
 		$document = JFactory::getDocument();
  
+ 		$script_declaration = '
+			var bookingcalendar_ajax_url = "' . $this->ajax_url . '";
+			var bookingcalendar_img_loading_month = "' . $this->root_theme . '/' . $this->theme . '/images/ajax-loader-month.gif";	
+			var bookingcalendar_months_to_show = ' . $this->months_to_show . ';
+			var bookingcalendar_clickable_past = "' . $this->active_past_dates . '";
+		';
+		
+		if (isset($this->item_id)) {
+			$script_declaration.= '
+				var bookingcalendar_item_id = "' . $this->item_id . '";
+			';
+		}
+		
+		if (isset($this->status)) {
+			$script_declaration.= '
+				var bookingcalendar_status = "' . $this->status . '";
+			';
+		}
+
 		// Add Javascript
-		$document->addScriptDeclaration('
-			var ajax_url = "' . $this->ajax_url . '";
-			var img_loading_day	= "' . $this->root_theme . '/' . $this->theme . '/images/ajax-loader-day.gif";	
-			var img_loading_month = "' . $this->root_theme . '/' . $this->theme . '/images/ajax-loader-month.gif";	
-			var item_id 			= "' . $this->item_id . '";
-			var months_to_show		= ' . $this->months_to_show . ';
-			var clickable_past		= "' . $this->active_past_dates . '";
-		');
+		$document->addScriptDeclaration($script_declaration);
 	}
 }
