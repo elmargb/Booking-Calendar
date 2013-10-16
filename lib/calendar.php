@@ -31,7 +31,7 @@ class BookingCalendar {
 	
 	public $custom_class = '';
 	
-	public $show_statuses = true;
+	public $show_legend = true;
 	
 	private $_week_days = array(0 =>'sunday', 1 => 'monday', 2 => 'tuesday', 3 => 'wednesday', 4 => 'thursday', 5 => 'friday', 6 => 'saturday');
 	private $_months = array('01' => 'january', '02' => 'february', '03'=> 'march', '04' => 'april', '05' => 'may', '06' => 'june', '07' => 'july', '08' => 'august', '09' => 'september', '10' => 'october', '11' => 'november', '12' => 'december');
@@ -75,9 +75,9 @@ class BookingCalendar {
 			)
 		);
 		
-		if ($this->show_statuses) {
-			$layout_statuses = new JLayoutFile('statuses', $layoutPath);
-			$html_statuses = $layout_statuses->render( array(
+		if ($this->show_legend) {
+			$layout_legend = new JLayoutFile('legend', $layoutPath);
+			$html_legend = $layout_legend->render( array(
 				'root_theme' => $this->root_theme,
 				'theme' => $this->theme,
 				'statuses' => $this->statuses
@@ -90,7 +90,7 @@ class BookingCalendar {
 		echo $layout_skeleton->render( array(
 			'html_main' => $html_main,
 			'html_controls' => $html_controls,
-			'html_statuses' => $html_statuses
+			'html_legend' => $html_legend
 			)
 		);
 	}
@@ -137,7 +137,7 @@ class BookingCalendar {
 		//	Fill the first week of the month with the appropriate number of blanks.       
 		$j=1;
 		
-		if($this->start_day=="sun")
+		if($this->start_day== 0)
 			$first_week_day_start = $first_week_day;	# start sunday
 		else
 			$first_week_day	= $first_week_day-1;	# start monday
