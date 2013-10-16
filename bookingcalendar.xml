@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade" version="2.5.0">
+	<name>Booking Calendar</name>
+	<libraryname>bookingcalendar</libraryname>
+	<author>Jiliko.net</author>
+	<creationDate>October 9th, 2013</creationDate>
+	<copyright>Copyright Jiliko.net 2009-2013</copyright>
+	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+	<authorEmail>o.nolbert@jiliko.net</authorEmail>
+	<authorUrl>www.jiliko.net</authorUrl>
+	<version>3.0.0</version>
+	<description>BOOKING_CALENDAR_XML_DESCRIPTION</description>
+	<files folder="lib">
+		<file>calendar.php</file>
+	</files>
+	<media folder="media" destination="bookingcalendar">
+		<folder>js</folder>
+		<folder>themes</folder>
+	</media>
+</extension>
