@@ -25,8 +25,8 @@ class BookingCalendar {
 	public $start_year;
 	public $start_month;
 	
-	public $item_id = null;
-	public $status = null;
+	public $item_id = 0;
+	public $status = '';
 	
 	public $ajax_url = '';
 	
@@ -308,20 +308,10 @@ class BookingCalendar {
 			var bookingcalendar_ajax_url = "' . $this->ajax_url . '";
 			var bookingcalendar_img_loading_month = "' . $this->root_theme . '/' . $this->theme . '/images/ajax-loader-month.gif";	
 			var bookingcalendar_months_to_show = ' . $this->months_to_show . ';
-			var bookingcalendar_clickable_past = "' . $this->active_past_dates . '";
+			var bookingcalendar_clickable_past = ' . ($this->active_past_dates  ? 'true' : 'false') . ';
+			var bookingcalendar_item_id = ' . $this->item_id . ';
+			var bookingcalendar_status = "' . $this->status . '";
 		';
-		
-		if (isset($this->item_id)) {
-			$script_declaration.= '
-				var bookingcalendar_item_id = "' . $this->item_id . '";
-			';
-		}
-		
-		if (isset($this->status)) {
-			$script_declaration.= '
-				var bookingcalendar_status = "' . $this->status . '";
-			';
-		}
 
 		// Add Javascript
 		$document->addScriptDeclaration($script_declaration);
