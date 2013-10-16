@@ -87,7 +87,7 @@ class BookingCalendar {
 		
 		$layout_skeleton = new JLayoutFile('skeleton', $layoutPath);
 		
-		return $layout_skeleton->render( array(
+		echo $layout_skeleton->render( array(
 			'html_main' => $html_main,
 			'html_controls' => $html_controls,
 			'html_statuses' => $html_statuses
