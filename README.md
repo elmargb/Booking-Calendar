@@ -7,7 +7,7 @@ This library lets you display a calendar filled with a custom # of months. For e
 
 The booking source can be what you want. You can code your own way to retrieve booked days as soon as you follow the required structure for the booked days array (check the getBookedDays() method).  
 
-For the calendar navigation, you just need to provide an 'item_id' (Joomla current displayed article id as example) and customize the ajax url to call the right page that will retrieve the booked days for this item id for the previous r next months and display the new infos.
+For the calendar navigation, you just need to provide an 'item_id' (Joomla current displayed article id as example) and customize the ajax url to call the right page that will retrieve the booked days for this item id for the previous or next months and display the new infos.
 
 Some options :
 
@@ -58,3 +58,5 @@ $calendar = new BookingCalendar( array(
 
 $calendar->display();
 ?>
+
+The Booking Calendar is based on the work of Chris Bolson on http://www.ajaxavailabilitycalendar.com
