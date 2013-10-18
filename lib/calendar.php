@@ -14,9 +14,6 @@ class BookingCalendar {
 	
 	public $statuses = array();
 	
-	public $mix_day_classes = 'mix';
-	public $mix_day_title_status = 'BOOKING_CALENDAR_MIX';
-	
 	public $root_js = '/media/bookingcalendar/js';
 	public $root_theme = '/media/bookingcalendar/themes';
 	
@@ -164,10 +161,16 @@ class BookingCalendar {
 		$last_week_num = 0;
 		//	loop through days (til max in month) to draw calendar
 		for($day_counter = 1; $day_counter <= $days_in_this_month; $day_counter++){
-			//	reset xtra classes for each day
-			//	note - these classes acumulate for each day according to state, current and clickable
 			$day_classes 	=	"";
-			$day_title_status=	" - ".JText::_("BOOKING_CALENDAR_AVAILABLE");
+			$day_title_status =	" - ".JText::_("BOOKING_CALENDAR_AVAILABLE");
+			
+			//	format date for db modifying - the date is passed via ajax
+			$date_db		=	$year."-".sprintf("%02s",$month)."-".sprintf("%02s",$day_counter);
+	        
+			//	check if day is available
+			if(array_key_exists($date_db,$booked_days)) {
+				list($day_classes, $day_title_status) = $this->_getBookedDayInfos($date_db,$booked_days);
+			}
 			
 			//	set all dates to clickable for now.... need to control this for admin OR for user side booking		
 			$day_classes.=' clickable';
@@ -184,29 +187,9 @@ class BookingCalendar {
 			//	highlight current day
 			if($date_timestamp==$today_timestamp)	$day_classes.=' today';
 			
-			//	format date for db modifying - the date is passed via ajax
-			$date_db		=	$year."-".sprintf("%02s",$month)."-".sprintf("%02s",$day_counter);
-	        
+			
 	        //	format date for display only
 	        $date_format = date($this->date_format, mktime(0, 0, 0, $month, $day_counter, $year));
-	        
-			//	check if day is available
-			if(array_key_exists($date_db,$booked_days)) {
-				if(count($booked_days[$date_db]) == 1 ) {
-					$booking_status = $booked_days[$date_db][0]["status"];
-					
-					if (isset($this->statuses[$booking_status])) {
-						$day_classes.= " ".$this->statuses[$booking_status];
-						$day_title_status = " - ".JText::_($this->statuses[$booking_status]);
-					} else {
-						$day_classes.= " ".$booking_status;
-						$day_title_status = " - ".JText::_($booking_status);
-					}
-				} else {
-					$day_classes.= " ".$this->mix_day_classes;
-					$day_title_status =" - ".JText::_($this->mix_day_title_status);
-				}
-			}
 						
 			//	check if date is past			
 			if( $date_timestamp<$today_timestamp){
@@ -282,9 +265,8 @@ class BookingCalendar {
 		$booked_days = array();
 		
 		/* the booked days array must have this format :
-		 * $booked_days[Y-m-d][#]['status'] = 'booked'
+		 * $booked_days[Y-m-d]['status'] = 'booked'
 		 * [Y-m-d] -> The date of the day : 2013-10-15
-		 * [#] -> Key : 0 for the first retrieved item
 		 * ['booked'] -> value of the status. Can be what you want. It will be used in the title of the day and as css class.
 		 *  
 		*/ 
@@ -292,10 +274,24 @@ class BookingCalendar {
 		// this sets the 1st day of the $month and $year as 'booked'.
 		/*
 		$booked_date = date('Y-m-d', mktime(0, 0, 0, $month, 1, $year));
-		$booked_days[$booked_date][0]['status'] = 'booked';
+		$booked_days[$booked_date]['status'] = 'booked';
 		*/
 		
 		return $booked_days;
+	}
+	
+	protected function _getBookedDayInfos($date_db, $booked_days) {
+		$booking_status = $booked_days[$date_db]["status"];
+		
+		if (isset($this->statuses[$booking_status])) {
+			$day_classes = $this->statuses[$booking_status];
+			$day_title_status = " - ".JText::_($this->statuses[$booking_status]);
+		} else {
+			$day_classes = $booking_status;
+			$day_title_status = " - ".JText::_($booking_status);
+		}
+
+		return array($day_classes, $day_title_status);
 	}
 	
 	protected function _scripts() {
